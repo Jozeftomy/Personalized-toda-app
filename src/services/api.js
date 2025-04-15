@@ -9,18 +9,60 @@ const api = axios.create({
     },
 });
 
-export const registerUser = (userData) => api.post("/auth/register", userData);
-export const loginUser = (userData) => api.post("/auth/login", userData);
-export const fetchTasks = (token) =>
-    api.get("/tasks", { headers: { Authorization: `Bearer ${token}` } });
+// Add detailed error handling for API calls
+export const registerUser = async (userData) => {
+    try {
+        const response = await api.post("/auth/register", userData);
+        return response.data;
+    } catch (error) {
+        console.error("Error registering user:", error.response?.data || error.message);
+    }
+};
 
-export const addTask = (token, task) => 
-    api.post("/tasks", task, { headers: { Authorization: `Bearer ${token}` } });
+export const loginUser = async (userData) => {
+    try {
+        const response = await api.post("/auth/login", userData);
+        return response.data;
+    } catch (error) {
+        console.error("Error logging in user:", error.response?.data || error.message);
+    }
+};
 
-export const updateTask = (token, id, updatedTask) =>
-    api.put(`/tasks/${id}`, updatedTask, { headers: { Authorization: `Bearer ${token}` } });
+export const fetchTasks = async (token) => {
+    try {
+        const response = await api.get("/tasks", { headers: { Authorization: `Bearer ${token}` } });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching tasks:", error.response?.data || error.message);
+    }
+};
 
-export const deleteTask = (token, id) =>
-    api.delete(`/tasks/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+export const addTask = async (token, task) => {
+    try {
+        console.log("Adding task:", task); // Debugging
+        const response = await api.post("/tasks", task, { headers: { Authorization: `Bearer ${token}` } });
+        return response.data;
+    } catch (error) {
+        console.error("Error adding task:", error.response?.data || error.message);
+    }
+};
+
+export const updateTask = async (token, id, updatedTask) => {
+    try {
+        const response = await api.put(`/tasks/${id}`, updatedTask, { headers: { Authorization: `Bearer ${token}` } });
+        return response.data;
+    } catch (error) {
+        console.error("Error updating task:", error.response?.data || error.message);
+    }
+};
+
+export const deleteTask = async (token, id) => {
+    try {
+        const response = await api.delete(`/tasks/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+        return response.data;
+    } catch (error) {
+        console.error("Error deleting task:", error.response?.data || error.message);
+    }
+};
 
 export default api;

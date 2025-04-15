@@ -22,18 +22,30 @@ const Dashboard = () => {
   };
 
   const handleAddTask = async (task) => {
-    await addTask(token, task);
-    loadTasks();
+    try {
+      await addTask(token, task);
+      loadTasks();
+    } catch (error) {
+      console.error("Error adding task:", error);
+    }
   };
 
   const handleUpdateTask = async (id, updatedTask) => {
-    await updateTask(token, id, updatedTask);
-    loadTasks();
+    try {
+      await updateTask(token, id, updatedTask);
+      loadTasks();
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
   };
 
   const handleDeleteTask = async (id) => {
-    await deleteTask(token, id);
-    loadTasks();
+    try {
+      await deleteTask(token, id);
+      loadTasks();
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
   };
 
   const filteredTasks = tasks.filter((task) =>
@@ -43,9 +55,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-green-50 to-green-100 py-12 px-6 flex items-center justify-center">
       <div className="max-w-3xl w-full bg-white p-8 rounded-xl shadow-2xl space-y-8">
-        <h1 className="text-4xl font-semibold text-center text-green-700">
-          Task Manager
-        </h1>
+        <h1 className="text-4xl font-semibold text-center text-green-700">Task Manager</h1>
 
         {/* Filters */}
         <div className="flex justify-center gap-4">
@@ -65,11 +75,7 @@ const Dashboard = () => {
         </div>
 
         <TaskForm onAdd={handleAddTask} />
-        <TaskList
-          tasks={filteredTasks}
-          onDelete={handleDeleteTask}
-          onUpdate={handleUpdateTask}
-        />
+        <TaskList tasks={filteredTasks} onDelete={handleDeleteTask} onUpdate={handleUpdateTask} />
       </div>
     </div>
   );
