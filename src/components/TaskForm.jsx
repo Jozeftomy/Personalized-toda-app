@@ -33,6 +33,8 @@ const TaskForm = ({ onAdd, taskToEdit, onUpdate }) => {
 
   return (
     <form className="space-y-4 p-6 bg-white rounded-lg shadow-sm border border-gray-200" onSubmit={handleSubmit}>
+      <h2 className="text-xl font-semibold text-gray-800">Create New Task</h2>
+      
       <div className="space-y-2">
         <label htmlFor="title" className="block text-sm font-medium text-gray-700">
           Task Title
@@ -80,7 +82,7 @@ const TaskForm = ({ onAdd, taskToEdit, onUpdate }) => {
 
       <button
         type="submit"
-        className="w-full py-2 px-4 bg-green-500 hover:bg-green-600 text-white font-medium rounded-md transition-colors"
+        className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors"
       >
         {taskToEdit ? "Update Task" : "Add Task"}
       </button>
