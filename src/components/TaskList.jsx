@@ -1,40 +1,33 @@
 import React, { useState } from "react";
-import { FaTrash, FaEdit, FaCheck, FaTimes, FaFlag } from "react-icons/fa";
+import { FaTrash, FaEdit, FaCheck, FaTimes, FaCircle } from "react-icons/fa";
 
 const TaskList = ({ tasks, onDelete, onUpdate, isLoading }) => {
   const [editingId, setEditingId] = useState(null);
   const [editTitle, setEditTitle] = useState("");
   const [editDesc, setEditDesc] = useState("");
   const [editPriority, setEditPriority] = useState("medium");
+  const [editStatus, setEditStatus] = useState("pending");
 
   const handleEditSubmit = (id) => {
     onUpdate(id, {
       title: editTitle,
       description: editDesc,
       priority: editPriority,
+      status: editStatus,
     });
     setEditingId(null);
   };
 
+  const statusStyles = {
+    pending: "text-gray-500",
+    inprogress: "text-blue-500",
+    completed: "text-green-500"
+  };
+
   const priorityStyles = {
-    high: {
-      bg: "bg-red-50",
-      text: "text-red-700",
-      icon: "text-red-500",
-      border: "border-red-200"
-    },
-    medium: {
-      bg: "bg-yellow-50",
-      text: "text-yellow-700",
-      icon: "text-yellow-500",
-      border: "border-yellow-200"
-    },
-    low: {
-      bg: "bg-green-50",
-      text: "text-green-700",
-      icon: "text-green-500",
-      border: "border-green-200"
-    }
+    high: "text-red-500",
+    medium: "text-gray-500", 
+    low: "text-green-500"
   };
 
   if (isLoading) {
@@ -57,13 +50,11 @@ const TaskList = ({ tasks, onDelete, onUpdate, isLoading }) => {
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {tasks.map((task) => (
         <div
           key={task._id}
-          className={`p-5 rounded-lg shadow-xs transition-all duration-200 border-l-4 ${
-            priorityStyles[task.priority].border
-          } ${priorityStyles[task.priority].bg}`}
+          className="p-4 bg-white rounded-lg shadow-sm border border-gray-100"
         >
           {editingId === task._id ? (
             <div className="space-y-3">
@@ -81,18 +72,29 @@ const TaskList = ({ tasks, onDelete, onUpdate, isLoading }) => {
                 onChange={(e) => setEditDesc(e.target.value)}
                 placeholder="Task description"
               />
-              <select
-                value={editPriority}
-                onChange={(e) => setEditPriority(e.target.value)}
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-300"
-              >
-                <option value="high">High Priority</option>
-                <option value="medium">Medium Priority</option>
-                <option value="low">Low Priority</option>
-              </select>
+              <div className="grid grid-cols-2 gap-3">
+                <select
+                  value={editPriority}
+                  onChange={(e) => setEditPriority(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-300"
+                >
+                  <option value="high">High Priority</option>
+                  <option value="medium">Medium Priority</option>
+                  <option value="low">Low Priority</option>
+                </select>
+                <select
+                  value={editStatus}
+                  onChange={(e) => setEditStatus(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-300"
+                >
+                  <option value="pending">Pending</option>
+                  <option value="inprogress">In Progress</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
               <div className="flex gap-2 pt-1">
                 <button
-                  className="flex-1 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors flex items-center justify-center gap-2 text-sm"
+                  className="flex-1 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 text-sm"
                   onClick={() => handleEditSubmit(task._id)}
                 >
                   <FaCheck /> Save Changes
@@ -108,17 +110,28 @@ const TaskList = ({ tasks, onDelete, onUpdate, isLoading }) => {
           ) : (
             <div className="flex justify-between items-start gap-3">
               <div className="space-y-1.5 flex-1">
-                <div className="flex items-center gap-2">
-                  <FaFlag className={`${priorityStyles[task.priority].icon} text-sm`} />
-                  <h4 className={`text-md font-medium ${priorityStyles[task.priority].text}`}>
-                    {task.title}
-                  </h4>
-                </div>
+                <h4 className="text-md font-medium text-gray-800">
+                  {task.title}
+                </h4>
                 {task.description && (
-                  <p className="text-sm text-gray-600 leading-snug pl-5">
+                  <p className="text-sm text-gray-600 leading-snug">
                     {task.description}
                   </p>
                 )}
+                <div className="flex items-center gap-3 mt-1">
+                  <div className="flex items-center gap-1">
+                    <FaCircle className={`text-xs ${priorityStyles[task.priority]}`} />
+                    <span className="text-xs text-gray-500">
+                      {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <FaCircle className={`text-xs ${statusStyles[task.status]}`} />
+                    <span className="text-xs text-gray-500">
+                      {task.status.charAt(0).toUpperCase() + task.status.slice(1)}
+                    </span>
+                  </div>
+                </div>
               </div>
               <div className="flex gap-1.5">
                 <button
@@ -127,6 +140,7 @@ const TaskList = ({ tasks, onDelete, onUpdate, isLoading }) => {
                     setEditTitle(task.title);
                     setEditDesc(task.description);
                     setEditPriority(task.priority);
+                    setEditStatus(task.status);
                   }}
                   className="p-1.5 text-blue-500 hover:text-blue-700 hover:bg-blue-50 rounded-md transition-colors"
                   aria-label="Edit task"
