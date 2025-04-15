@@ -80,7 +80,7 @@ const TaskForm = ({ onAdd, taskToEdit, onUpdate }) => {
 
       <button
         type="submit"
-        className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors"
+        className="w-full py-2 px-4 bg-green-500 hover:bg-green-600 text-white font-medium rounded-md transition-colors"
       >
         {taskToEdit ? "Update Task" : "Add Task"}
       </button>
