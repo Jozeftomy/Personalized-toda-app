@@ -94,7 +94,7 @@ const TaskList = ({ tasks, onDelete, onUpdate, isLoading }) => {
               </div>
               <div className="flex gap-2 pt-1">
                 <button
-                  className="flex-1 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 text-sm"
+                  className="flex-1 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors flex items-center justify-center gap-2 text-sm"
                   onClick={() => handleEditSubmit(task._id)}
                 >
                   <FaCheck /> Save Changes
@@ -142,7 +142,7 @@ const TaskList = ({ tasks, onDelete, onUpdate, isLoading }) => {
                     setEditPriority(task.priority);
                     setEditStatus(task.status);
                   }}
-                  className="p-1.5 text-green-500 hover:text-green-700 hover:bg-blue-50 rounded-md transition-colors"
+                  className="p-1.5 text-blue-500 hover:text-blue-700 hover:bg-blue-50 rounded-md transition-colors"
                   aria-label="Edit task"
                 >
                   <FaEdit size={14} />
