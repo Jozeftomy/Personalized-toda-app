@@ -142,7 +142,7 @@ const TaskList = ({ tasks, onDelete, onUpdate, isLoading }) => {
                     setEditPriority(task.priority);
                     setEditStatus(task.status);
                   }}
-                  className="p-1.5 text-blue-500 hover:text-blue-700 hover:bg-blue-50 rounded-md transition-colors"
+                  className="p-1.5 text-green-500 hover:text-green-700 hover:bg-blue-50 rounded-md transition-colors"
                   aria-label="Edit task"
                 >
                   <FaEdit size={14} />
