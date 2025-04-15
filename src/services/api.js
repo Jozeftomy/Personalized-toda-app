@@ -9,59 +9,71 @@ const api = axios.create({
     },
 });
 
-// Add detailed error handling for API calls
+// Add response interceptor to handle errors
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response) {
+            return Promise.reject(error.response.data);
+        } else if (error.request) {
+            return Promise.reject({ message: "No response received from server" });
+        } else {
+            return Promise.reject({ message: error.message });
+        }
+    }
+);
+
 export const registerUser = async (userData) => {
     try {
         const response = await api.post("/auth/register", userData);
-        return response.data;
+        return { success: true, data: response.data };
     } catch (error) {
-        console.error("Error registering user:", error.response?.data || error.message);
+        return { success: false, error: error.message || "Registration failed" };
     }
 };
 
 export const loginUser = async (userData) => {
     try {
         const response = await api.post("/auth/login", userData);
-        return response.data;
+        return { success: true, data: response.data };
     } catch (error) {
-        console.error("Error logging in user:", error.response?.data || error.message);
+        return { success: false, error: error.message || "Login failed" };
     }
 };
 
 export const fetchTasks = async (token) => {
     try {
         const response = await api.get("/tasks", { headers: { Authorization: `Bearer ${token}` } });
-        return response.data;
+        return { success: true, data: response.data };
     } catch (error) {
-        console.error("Error fetching tasks:", error.response?.data || error.message);
+        return { success: false, error: error.message || "Failed to fetch tasks" };
     }
 };
 
 export const addTask = async (token, task) => {
     try {
-        console.log("Adding task:", task); // Debugging
         const response = await api.post("/tasks", task, { headers: { Authorization: `Bearer ${token}` } });
-        return response.data;
+        return { success: true, data: response.data };
     } catch (error) {
-        console.error("Error adding task:", error.response?.data || error.message);
+        return { success: false, error: error.message || "Failed to add task" };
     }
 };
 
 export const updateTask = async (token, id, updatedTask) => {
     try {
         const response = await api.put(`/tasks/${id}`, updatedTask, { headers: { Authorization: `Bearer ${token}` } });
-        return response.data;
+        return { success: true, data: response.data };
     } catch (error) {
-        console.error("Error updating task:", error.response?.data || error.message);
+        return { success: false, error: error.message || "Failed to update task" };
     }
 };
 
 export const deleteTask = async (token, id) => {
     try {
         const response = await api.delete(`/tasks/${id}`, { headers: { Authorization: `Bearer ${token}` } });
-        return response.data;
+        return { success: true, data: response.data };
     } catch (error) {
-        console.error("Error deleting task:", error.response?.data || error.message);
+        return { success: false, error: error.message || "Failed to delete task" };
     }
 };
 
